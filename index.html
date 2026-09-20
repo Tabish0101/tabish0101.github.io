@@ -1,14 +1,340 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Image Generator</title>
-    <script type="module" crossorigin src="/assets/index-DV5JIBAR.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CR-DglXx.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Tabish Jeelani – Product and technical lead</title>
+  <meta name="description" content="Tabish Jeelani is a product and technical lead building FLX, a B2B logistics and warehousing platform for Saudi Arabia and the Gulf." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23121A22'/%3E%3Cpath d='M8 9h16M8 16h11M8 23h6' stroke='%23F0A93B' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #121A22;
+      --surface: #18222C;
+      --line: #2A3743;
+      --text: #E6EAEE;
+      --muted: #93A1AD;
+      --accent: #F0A93B;
+      --sans: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+      --wrap: 62rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Header */
+    header.top { padding: 1.5rem 0; }
+    header.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .mark { font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
+    nav ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; }
+    nav a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero { padding: clamp(3.5rem, 10vw, 7.5rem) 0 clamp(3rem, 8vw, 5.5rem); }
+    .hero h1 {
+      font-size: clamp(3.25rem, 11vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 700;
+      margin: 0 0 1.75rem;
+      font-variation-settings: "opsz" 96;
+    }
+    .hero .role { font-size: clamp(1.15rem, 2.4vw, 1.5rem); max-width: 34rem; margin: 0 0 1rem; line-height: 1.4; }
+    .hero .aside { color: var(--muted); max-width: 34rem; margin: 0 0 2.25rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-block; padding: 0.7rem 1.15rem; border-radius: 4px;
+      border: 1px solid var(--line); text-decoration: none; font-weight: 500;
+      transition: border-color .15s, background-color .15s;
+    }
+    .btn:hover { border-color: var(--muted); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #1a1205; }
+    .btn.primary:hover { background: #f5b95a; border-color: #f5b95a; }
+
+    /* Route line: the one motion moment on the page */
+    .route { margin-top: clamp(3rem, 7vw, 5rem); }
+    .route svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .route .path { stroke: var(--accent); stroke-width: 2; fill: none; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.6s .2s ease-out forwards; }
+    .route .track { stroke: var(--line); stroke-width: 2; fill: none; }
+    .route .node { fill: var(--bg); stroke: var(--accent); stroke-width: 2; opacity: 0; animation: pop .3s ease-out forwards; }
+    .route .node:nth-of-type(1) { animation-delay: .2s; }
+    .route .node:nth-of-type(2) { animation-delay: .9s; }
+    .route .node:nth-of-type(3) { animation-delay: 1.7s; }
+    .route text { font-family: var(--mono); font-size: 13px; fill: var(--muted); opacity: 0; animation: pop .3s ease-out forwards; }
+    .route text:nth-of-type(1) { animation-delay: .3s; }
+    .route text:nth-of-type(2) { animation-delay: 1s; }
+    .route text:nth-of-type(3) { animation-delay: 1.8s; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes pop { to { opacity: 1; } }
+
+    /* Sections */
+    section { padding: clamp(3rem, 8vw, 5.5rem) 0; }
+    h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 2rem; font-weight: 700; }
+    h3 { font-size: 1.2rem; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+    p { margin: 0 0 1rem; }
+    .prose { max-width: 40rem; }
+    .muted { color: var(--muted); }
+    .mono { font-family: var(--mono); font-size: 0.85rem; }
+
+    /* FLX case study */
+    .flx-intro { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+    .constraints { display: grid; gap: 1.25rem; margin: 2rem 0 0; padding: 0; list-style: none; }
+    .constraints li { padding-left: 1.1rem; border-left: 2px solid var(--accent); }
+    .constraints strong { display: block; font-weight: 500; }
+    .constraints span { color: var(--muted); font-size: 0.97rem; }
+
+    .diagram { display: grid; gap: 0.75rem; }
+    .layer { border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.15rem; background: var(--surface); }
+    .layer.admin { border-style: dashed; }
+    .layer.core { border-color: var(--accent); }
+    .layer .name { font-weight: 700; display: block; }
+    .layer .desc { color: var(--muted); font-size: 0.93rem; }
+    .parties { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+
+    .modules { margin-top: 3rem; display: grid; gap: 2rem; }
+    .module { max-width: 40rem; }
+    .module h3 { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+    .module .status { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); }
+    .module p { color: var(--muted); margin: 0; }
+
+    /* Timeline (a real sequence, so it earns its markers) */
+    .timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+    .timeline::before { content: ""; position: absolute; left: 5px; top: 0.6rem; bottom: 0.6rem; width: 1px; background: var(--line); }
+    .timeline li { position: relative; padding: 0 0 2.5rem 2rem; }
+    .timeline li:last-child { padding-bottom: 0; }
+    .timeline li::before {
+      content: ""; position: absolute; left: 0; top: 0.55rem; width: 11px; height: 11px;
+      border-radius: 50%; background: var(--bg); border: 2px solid var(--muted);
+    }
+    .timeline li.current::before { border-color: var(--accent); background: var(--accent); }
+    .timeline .when { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+    .timeline h3 { margin: 0.15rem 0 0.4rem; }
+    .timeline p { color: var(--muted); max-width: 38rem; margin: 0; }
+    .placeholder h3, .placeholder p { opacity: .55; }
+
+    /* Stack */
+    .stack { display: grid; gap: 2rem 3rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+    .stack h3 { font-size: 1rem; color: var(--muted); font-weight: 500; margin-bottom: 0.9rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+    .chips li { font-family: var(--mono); font-size: 0.85rem; padding: 0.3rem 0.65rem; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+
+    /* Contact */
+    .contact { padding-bottom: 3rem; }
+    .contact .big { font-size: clamp(1.75rem, 5vw, 3rem); letter-spacing: -0.03em; line-height: 1.1; font-weight: 700; margin: 0 0 1.75rem; max-width: 30rem; }
+    footer { padding: 2rem 0 3rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); }
+
+    @media (min-width: 52rem) {
+      .flx-intro { grid-template-columns: 1.05fr 1fr; gap: 4rem; align-items: start; }
+    }
+    @media (max-width: 34rem) {
+      nav ul { gap: 1rem; }
+      .parties { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .route .path { animation: none; stroke-dashoffset: 0; }
+      .route .node, .route text { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="mark" href="#top">Tabish Jeelani</a>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#flx">FLX</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#stack">Stack</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap">
+      <div class="hero">
+        <h1>Tabish<br />Jeelani</h1>
+        <p class="role">Product and technical lead building FLX, a B2B logistics and warehousing platform for Saudi Arabia and the Gulf.</p>
+        <p class="aside">I also write on LinkedIn about how AI assistance changes the way developers learn.</p>
+        <div class="links">
+          <!-- TODO: replace with your real email and LinkedIn URL -->
+          <a class="btn primary" href="mailto:you@example.com">Get in touch</a>
+          <a class="btn" href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+
+        <div class="route" aria-hidden="true">
+          <svg viewBox="0 0 900 60" preserveAspectRatio="none" role="presentation">
+            <path class="track" d="M10 20 H890" />
+            <path class="path" pathLength="1" d="M10 20 H890" />
+            <circle class="node" cx="10" cy="20" r="7" />
+            <circle class="node" cx="450" cy="20" r="7" />
+            <circle class="node" cx="890" cy="20" r="7" />
+            <text x="10" y="54" text-anchor="start">customer</text>
+            <text x="450" y="54" text-anchor="middle">warehouse</text>
+            <text x="890" y="54" text-anchor="end">transporter</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <section id="flx" aria-labelledby="flx-title">
+      <div class="wrap">
+        <h2 id="flx-title">FLX</h2>
+        <div class="flx-intro">
+          <div>
+            <div class="prose">
+              <p>FLX is a B2B platform for logistics and warehousing in Saudi Arabia and the wider Gulf. It puts customers, warehouse partners and transporters on one system, with an admin layer that keeps the whole marketplace running.</p>
+              <p class="muted">I lead product and technical direction: what gets built, how it is specified, and how it ships.</p>
+            </div>
+            <ul class="constraints">
+              <li>
+                <strong>Built for the Gulf market</strong>
+                <span>All money is handled in SAR.</span>
+              </li>
+              <li>
+                <strong>Built to keep data in the Kingdom</strong>
+                <span>Architecture decisions follow KSA data sovereignty requirements.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="diagram" aria-label="How FLX is structured">
+            <div class="layer admin">
+              <span class="name">Admin layer</span>
+              <span class="desc">Dark-themed dashboard with its own design system</span>
+            </div>
+            <div class="layer core">
+              <span class="name">FLX platform</span>
+              <span class="desc">One system for listings, requests and fulfilment</span>
+            </div>
+            <div class="parties">
+              <div class="layer"><span class="name">Customers</span><span class="desc">Book storage and transport</span></div>
+              <div class="layer"><span class="name">Warehouse partners</span><span class="desc">List and manage space</span></div>
+              <div class="layer"><span class="name">Transporters</span><span class="desc">Run fleets and drivers</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modules">
+          <div class="module">
+            <h3>Transport Module <span class="status">Phase 1</span></h3>
+            <p>Lets customers arrange transport through FLX, so storage and movement live in the same place.</p>
+          </div>
+          <div class="module">
+            <h3>Drivers and fleet management</h3>
+            <p>Drivers are their own entity, separate from the transporter account. That covers the data schema, registration and compliance.</p>
+          </div>
+          <div class="module">
+            <h3>Admin panel</h3>
+            <p>A dark-themed dashboard built on a shared design system, with screen specs written for each workflow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" aria-labelledby="exp-title">
+      <div class="wrap">
+        <h2 id="exp-title">Experience</h2>
+        <!-- TODO: replace dates, and fill in or delete the two placeholder entries -->
+        <ol class="timeline">
+          <li class="current">
+            <span class="when">Year – Present</span>
+            <h3>Product and technical lead, FLX</h3>
+            <p>Own the product and technical direction of a logistics and warehousing platform for Saudi Arabia and the Gulf, across customer, warehouse partner, transporter and admin experiences.</p>
+          </li>
+          <li class="placeholder">
+            <span class="when">Year – Year</span>
+            <h3>[Role], [Company]</h3>
+            <p>[One or two lines on what you owned and what changed because of it.]</p>
+          </li>
+          <li class="placeholder">
+            <span class="when">Year – Year</span>
+            <h3>[Role], [Company]</h3>
+            <p>[One or two lines on what you owned and what changed because of it.]</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="stack" aria-labelledby="stack-title">
+      <div class="wrap">
+        <h2 id="stack-title">Stack</h2>
+        <div class="stack">
+          <div>
+            <h3>Backend</h3>
+            <ul class="chips">
+              <li>NestJS</li>
+              <li>TypeORM</li>
+              <li>DTO validation</li>
+              <li>Cloudinary</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Frontend</h3>
+            <ul class="chips">
+              <li>Next.js</li>
+              <li>Redux</li>
+              <li>Clerk auth</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Product</h3>
+            <ul class="chips">
+              <li>System specs</li>
+              <li>Screen specs</li>
+              <li>Design systems</li>
+              <li>Marketplace platforms</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Ways of working</h3>
+            <ul class="chips">
+              <li>LLM-assisted development</li>
+              <li>KSA data sovereignty</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title" class="muted" style="font-size:1rem;letter-spacing:0;font-weight:500;margin-bottom:1rem;">Contact</h2>
+        <p class="big">Working on logistics, marketplaces or AI-assisted development? Let's talk.</p>
+        <div class="links">
+          <a class="btn primary" href="mailto:you@example.com">Email me</a>
+          <a class="btn" href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="year">2026</span> Tabish Jeelani</div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
