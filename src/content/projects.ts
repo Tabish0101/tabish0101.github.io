@@ -31,8 +31,8 @@ export const projects: Project[] = [
     problem:
       'Pakistan has 200+ Army Public Schools spread across the country, but there is no single, structured source of truth — no place where a student can compare schools, an alumnus can find classmates, or a parent can research options. Information is scattered across outdated school websites, Facebook groups, and word of mouth.',
     approach:
-      'Designed a three-phase architecture where each phase is an addition, not a rewrite. Phase 1 is a statically generated Next.js site with MDX content and Zod-validated schemas — think of it like how Stripe's docs are built, but for school data. A data-access layer abstracts content sources so pages never touch the filesystem directly. Phase 2 swaps the layer to Supabase with Postgres, RLS-based authorization, and wiki features (revision history, moderation queues, role-based editing). The schema is DB-ready from day one — every entity carries IDs, slugs, relations, and revision fields even in the MDX phase.',
-    outcome:
+      'Designed a three-phase architecture where each phase is an addition, not a rewrite. Phase 1 is a statically generated Next.js site with MDX content and Zod-validated schemas — think of it like how Stripe\'s docs are built, but for school data.',
+      outcome:
       'A platform that can serve 200+ schools and their alumni networks. At scale, alumni directories and verified profiles create a natural path to premium features — alumni networking, job boards, and school analytics — a model similar to how LinkedIn monetized professional identity, applied to an underserved network of 500,000+ APSACS graduates.',
   },
   {
