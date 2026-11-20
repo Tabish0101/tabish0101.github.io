@@ -1,0 +1,13 @@
+.next
+node_modules
+out
+.lighthouseci
+lighthouse-reports
+pnpm-lock.yaml
+public/benchmarks
+public/hero
+next-env.d.ts
+# Generated from design-system/tokens.json — run `pnpm tokens` instead of formatting by hand.
+src/styles/tokens.css
+# Mirrors the Tenebris design system artifact byte for byte.
+design-system

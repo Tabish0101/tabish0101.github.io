@@ -1,0 +1,183 @@
+/*
+ * Tenebris v1 — generated from design-system/tokens.json.
+ * Do not edit by hand: change the tokens, then run `pnpm tokens`.
+ */
+
+/* Color — dark is the identity, light exists for accessibility. */
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --void: #080706; /* Deepest background. The abyss behind everything. */
+  --surface-100: #0E0D0B; /* Page background. Primary ground plane for all content. */
+  --surface-200: #161412; /* Card and section backgrounds. One step above the ground. */
+  --surface-300: #1E1B18; /* Elevated surfaces, hover states, active areas. */
+  --ink: #E8E0D4; /* Primary text. Warm parchment on dark, deep umber on light. 12:1+ on surface-100. */
+  --ink-muted: #8A7E6F; /* Secondary text, descriptions. 4.5:1+ on surface-100. */
+  --ink-ghost: #4A4239; /* Tertiary text, decorative numbers, faint labels. Not for essential content — decorative only. */
+  --accent: #C4841D; /* The spotlight. Amber highlight for links, active states, key elements. Use sparingly — tenebrism demands restraint. */
+  --accent-hover: #D4942D; /* Accent on hover. Slightly brighter in dark, slightly darker in light. */
+  --accent-soft: #2A1F0E; /* Accent tint for backgrounds, hover fills, subtle emphasis areas. */
+  --on-accent: #0E0D0B; /* Text on accent fills. Dark on amber in dark theme, white on amber in light. */
+  --border: #2A2724; /* Structural lines, dividers, card borders. Hairline (1px) — structure, not decoration. */
+  --danger: #B54234; /* Error states, destructive actions. 4.5:1+ on surface-100. */
+  --danger-soft: #2A1210; /* Danger tint for backgrounds and warning areas. */
+  --focus-ring: #C4841D; /* Keyboard focus indicator. 2px solid ring with 2px gap in surface color. 3:1+ on surface-100 and surface-200. */
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --void: #F5F0E8; /* Deepest background. The abyss behind everything. */
+  --surface-100: #EDE7DC; /* Page background. Primary ground plane for all content. */
+  --surface-200: #E0D8CB; /* Card and section backgrounds. One step above the ground. */
+  --surface-300: #D4CABB; /* Elevated surfaces, hover states, active areas. */
+  --ink: #1A1611; /* Primary text. Warm parchment on dark, deep umber on light. 12:1+ on surface-100. */
+  --ink-muted: #6B6358; /* Secondary text, descriptions. 4.5:1+ on surface-100. */
+  --ink-ghost: #A69B8C; /* Tertiary text, decorative numbers, faint labels. Not for essential content — decorative only. */
+  --accent: #9A6714; /* The spotlight. Amber highlight for links, active states, key elements. Use sparingly — tenebrism demands restraint. */
+  --accent-hover: #875A10; /* Accent on hover. Slightly brighter in dark, slightly darker in light. */
+  --accent-soft: #F0E0C4; /* Accent tint for backgrounds, hover fills, subtle emphasis areas. */
+  --on-accent: #FFFFFF; /* Text on accent fills. Dark on amber in dark theme, white on amber in light. */
+  --border: #C8BDA8; /* Structural lines, dividers, card borders. Hairline (1px) — structure, not decoration. */
+  --danger: #A33428; /* Error states, destructive actions. 4.5:1+ on surface-100. */
+  --danger-soft: #F0D4D0; /* Danger tint for backgrounds and warning areas. */
+  --focus-ring: #9A6714; /* Keyboard focus indicator. 2px solid ring with 2px gap in surface color. 3:1+ on surface-100 and surface-200. */
+}
+
+/* Spacing (4px grid) and type families. */
+:root {
+  --space-1: 0.25rem; /* 4px — Tight internal padding. Icon gaps. */
+  --space-2: 0.5rem; /* 8px — Compact padding, inline element spacing. */
+  --space-3: 0.75rem; /* 12px — Button padding, list item gaps. */
+  --space-4: 1rem; /* 16px — Card padding, standard component gaps. */
+  --space-6: 1.5rem; /* 24px — Section inner padding, card-to-card gaps. */
+  --space-8: 2rem; /* 32px — Component-level spacing. */
+  --space-12: 3rem; /* 48px — Section spacing within a page region. */
+  --space-16: 4rem; /* 64px — Major section breaks. */
+  --space-24: 6rem; /* 96px — Page-level vertical rhythm between regions. */
+  --family-sans: var(--font-space-grotesk, "Space Grotesk"), system-ui, sans-serif;
+  --family-mono: var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace;
+}
+
+/* Tailwind theme: utilities resolve to the custom properties above, so themes switch at runtime. */
+@theme inline {
+  --color-*: initial;
+  --color-void: var(--void);
+  --color-surface-100: var(--surface-100);
+  --color-surface-200: var(--surface-200);
+  --color-surface-300: var(--surface-300);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-ghost: var(--ink-ghost);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-border: var(--border);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-focus-ring: var(--focus-ring);
+  --font-*: initial;
+  --font-sans: var(--family-sans);
+  --font-mono: var(--family-mono);
+}
+
+/* Spacing base (p-4 = space-4 = 16px) and radii. Tailwind defaults that Tenebris does not define are removed. */
+@theme static {
+  --spacing: 0.25rem;
+  --radius-*: initial;
+  --radius-none: 0;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+  --text-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+}
+
+/* Type styles — font, size, line height, weight and tracking as one utility. */
+/* display — Hero headings. One per page maximum. */
+@utility text-display {
+  font-family: var(--family-sans);
+  font-size: 4.5rem;
+  line-height: 4.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* heading-1 — Section headings. */
+@utility text-h1 {
+  font-family: var(--family-sans);
+  font-size: 3rem;
+  line-height: 3.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* heading-2 — Subsection headings, project card titles. */
+@utility text-h2 {
+  font-family: var(--family-sans);
+  font-size: 2rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* heading-3 — Tertiary headings, feature labels. */
+@utility text-h3 {
+  font-family: var(--family-sans);
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* body — Body copy. Set in ink on surface-100 or surface-200. */
+@utility text-body {
+  font-family: var(--family-sans);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+/* body-sm — Secondary body text, descriptions, metadata captions. */
+@utility text-body-sm {
+  font-family: var(--family-sans);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+/* label — All-caps tracked labels. Section markers, tags, navigation items, status badges. */
+@utility text-label {
+  font-family: var(--family-sans);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* caption — Image captions, footnotes, supplementary text. */
+@utility text-caption {
+  font-family: var(--family-sans);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+}
+
+/* mono-label — Section numbers (01, 02), tech stack labels, metadata, inline code. */
+@utility text-mono-label {
+  font-family: var(--family-mono);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+}
+
+/* mono-sm — Timestamps, version numbers, fine-print metadata. */
+@utility text-mono-sm {
+  font-family: var(--family-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 400;
+}

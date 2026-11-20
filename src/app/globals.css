@@ -1,0 +1,839 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+
+/*
+ * Tenebris on the web. Tokens and type utilities are generated (src/styles/tokens.css);
+ * this file holds layout primitives, components and the motion fallbacks.
+ */
+
+/*
+ * Contrast. Light mode exists for accessibility, so its text meets WCAG AA (4.5:1) on every
+ * surface the site sets it on. Two light tokens fall short of how the site uses them:
+ * - ink-muted #6B6358 is 4.5:1 on surface-100 only (its usage note says as much), but cards
+ *   and the form are surface-200 (4.18:1). The nearest value in the same hue that clears
+ *   surface-200 is #645C52 (4.65:1; 5.34:1 on the page). Remove once the token changes upstream.
+ * - accent #9A6714 is 3.95:1 on the page: fine for large text, icons and fills (3:1), not for
+ *   small text. Small accent text uses --accent-ink, which is accent-hover in light (4.88:1).
+ */
+:root[data-theme='light'] {
+  --ink-muted: #645c52;
+}
+
+:root {
+  --accent-ink: var(--accent);
+}
+
+:root[data-theme='light'] {
+  --accent-ink: var(--accent-hover);
+}
+
+@theme {
+  /* Content sits in a centered 960px column. */
+  --container-column: 60rem;
+
+  /* Motion: 150ms ease. Mechanical — no bounce, no spring. */
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: ease;
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@theme inline {
+  /* Accent for small text: AA in both themes (see Contrast above). */
+  --color-accent-ink: var(--accent-ink);
+}
+
+/* ------------------------------------------------------------------ base */
+
+@layer base {
+  html {
+    background-color: var(--surface-100);
+    color: var(--ink);
+    font-family: var(--family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scrollbar-color: var(--border) var(--surface-100);
+  }
+
+  body {
+    min-height: 100svh;
+    background-color: var(--surface-100);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  /* Keyboard-first focus: 2px amber ring, 2px gap in whatever surface sits behind it. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Anchored sections land below the fixed nav. */
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus targets for skip links and section anchors are containers, not controls. */
+  main:focus,
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+}
+
+/* Smooth anchors where Lenis is not running (touch, reduced motion, before JS). */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+}
+
+html.is-scroll-locked {
+  overflow: hidden;
+}
+
+/* Lenis — from lenis/dist/lenis.css */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ components */
+
+@layer components {
+  .column {
+    margin-inline: auto;
+    width: 100%;
+    max-width: calc(var(--container-column) + 2 * var(--space-4));
+    padding-inline: var(--space-4);
+
+    @media (width >= 48rem) {
+      max-width: calc(var(--container-column) + 2 * var(--space-6));
+      padding-inline: var(--space-6);
+    }
+  }
+
+  /* Regions are separated by space-24: 48px above and below each section. */
+  .section {
+    padding-block: var(--space-12);
+  }
+
+  /* Links: accent, no underline at rest, underline on hover. */
+  .link {
+    color: var(--accent-ink);
+    text-decoration-line: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: var(--accent-hover);
+      text-decoration-line: underline;
+    }
+  }
+
+  /* Text link with an amber rule that draws in on hover. */
+  .underline-draw {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-block: var(--space-1);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 1px;
+      background-color: var(--accent);
+      transform: scaleX(0);
+      transform-origin: right center;
+      transition: transform 150ms ease;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left center;
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 2.5rem;
+    padding-inline: var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: var(--family-sans);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+
+    &:disabled {
+      cursor: progress;
+      opacity: 0.6;
+    }
+  }
+
+  .btn-primary {
+    background-color: var(--accent);
+    color: var(--on-accent);
+
+    &:hover:not(:disabled) {
+      background-color: var(--accent-hover);
+    }
+  }
+
+  .btn-outline {
+    border-color: var(--border);
+    color: var(--ink);
+
+    &:hover {
+      background-color: var(--surface-300);
+    }
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    color: var(--ink-muted);
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  /* Tech tags are content, so ink-muted (readable), not ink-ghost (decorative only). */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--family-mono);
+    font-size: 0.8125rem;
+    line-height: 1.125rem;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    transition:
+      color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .skill-tag:hover {
+    border-color: var(--ink-muted);
+    color: var(--ink);
+  }
+
+  /* Form controls need a 3:1 boundary, so inputs use ink-muted rather than the hairline. */
+  .field {
+    width: 100%;
+    padding: var(--space-3);
+    background-color: var(--surface-200);
+    border: 1px solid var(--ink-muted);
+    border-radius: var(--radius-md);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    transition: border-color 150ms ease;
+
+    &::placeholder {
+      color: var(--ink-muted);
+    }
+
+    &:hover {
+      border-color: var(--ink);
+    }
+
+    &[aria-invalid='true'] {
+      border-color: var(--danger);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ nav */
+
+.nav-progress {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.menu-icon {
+  position: relative;
+  display: block;
+  width: 1.25rem;
+  height: 0.625rem;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transition: transform 150ms ease;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+}
+
+[aria-expanded='true'] > .menu-icon::before {
+  transform: translateY(0.28125rem) rotate(45deg);
+}
+
+[aria-expanded='true'] > .menu-icon::after {
+  transform: translateY(-0.28125rem) rotate(-45deg);
+}
+
+:root[data-theme='light'] .theme-icon-dark,
+:root:not([data-theme='light']) .theme-icon-light {
+  display: none;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-4);
+  z-index: 100;
+  transform: translateY(-200%);
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ loader (CSS-only: runs from first paint) */
+
+@property --loader-count {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@counter-style tenebris-pad-3 {
+  system: numeric;
+  symbols: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';
+  pad: 3 '0';
+}
+
+/*
+ * The loader stands on the page's own ground (surface-100), not void: the name is the first
+ * content, and the curtain lifts onto the same plane, so the hand-off has no tonal step.
+ * It also lets visual-progress metrics read the first frame as the page, which it is.
+ */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background-color: var(--surface-100);
+  clip-path: inset(0 0 0 0);
+  animation:
+    loader-exit 700ms var(--ease-curtain) 1750ms forwards,
+    loader-hide 1ms linear 2450ms forwards;
+}
+
+[data-intro='seen'] .loader {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    display: none;
+  }
+}
+
+.loader-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.loader-char {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: loader-char 800ms var(--ease-expo) calc(150ms + var(--i, 0) * 35ms) forwards;
+}
+
+.loader-fill {
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: loader-fill 1400ms var(--ease-in-out-cubic) 200ms forwards;
+}
+
+.loader-count {
+  counter-reset: loader var(--loader-count);
+  animation: loader-count 1400ms var(--ease-in-out-cubic) 200ms forwards;
+
+  &::after {
+    content: counter(loader, tenebris-pad-3);
+  }
+}
+
+@keyframes loader-char {
+  to {
+    transform: none;
+  }
+}
+
+@keyframes loader-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes loader-count {
+  from {
+    --loader-count: 0;
+  }
+  to {
+    --loader-count: 100;
+  }
+}
+
+@keyframes loader-exit {
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes loader-hide {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ------------------------------------------------------------------ hero */
+
+/* Desktop with motion: the hero holds for 60svh (sticky, no layout shift) while the 3D form recedes. */
+.hero-wrap {
+  position: relative;
+  height: 100svh;
+
+  @media (width >= 48rem) and (prefers-reduced-motion: no-preference) {
+    height: 160svh;
+  }
+}
+
+.hero {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.hero-visual {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.hero-canvas[data-ready='true'] {
+  opacity: 1;
+}
+
+.hero-fallback-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-fallback {
+  position: absolute;
+  top: 50%;
+  left: 69%;
+  height: 100%;
+  aspect-ratio: 1;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+  transition: opacity 900ms ease;
+
+  @media (width < 48rem) {
+    top: 34%;
+    left: 66%;
+    height: 68%;
+  }
+}
+
+.hero-dust {
+  transition: opacity 900ms ease;
+}
+
+/* Once the WebGL frame is up, the SVG and the CSS dust hand over to it. */
+.hero-canvas[data-ready='true'] ~ .hero-fallback-layer :is(.hero-fallback, .hero-dust) {
+  opacity: 0;
+}
+
+/*
+ * The portrait halftone (see PortraitFallback). Placement mirrors PORTRAIT_VIEW in
+ * three/portrait/Portrait.tsx: a bottom-anchored square centered 69% across, sized to 94%
+ * of the hero's height or 62% of its width, whichever is smaller — container units, so
+ * it measures the hero exactly as the canvas does.
+ */
+.portrait-stage {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+.portrait-fallback {
+  position: absolute;
+  bottom: 0;
+  left: 69%;
+  height: min(94cqh, 62cqw);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  transition: opacity 900ms ease;
+
+  /* Phones: above the copy, centered, fading out before the name. */
+  @media (width < 48rem) {
+    top: 7cqh;
+    bottom: auto;
+    left: 50%;
+    height: min(72cqh, 118cqw);
+    mask-image: linear-gradient(to bottom, #000 50%, transparent 88%);
+  }
+}
+
+/* The stipple is a mask over the ink: always the theme's color; only one file is fetched. */
+.portrait-halftone {
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--ink) 88%, var(--ink-muted));
+  mask: url('/hero/portrait-dots-dark.png') center / contain no-repeat;
+}
+
+:root[data-theme='light'] .portrait-halftone {
+  mask-image: url('/hero/portrait-dots-light.png');
+}
+
+.hero-canvas[data-ready='true'] ~ .hero-fallback-layer .portrait-fallback {
+  opacity: 0;
+}
+
+/*
+ * The packet: a dash 7% of the route long, travelling it every 9s. The stroke is
+ * non-scaling (1.5px at any size), which puts dash lengths in screen pixels too, so they
+ * are sized from the route's viewBox length (--route-length, set inline) times the pixels
+ * per viewBox unit: the SVG is 2 units tall and spans 100svh (68svh on phones).
+ */
+.hero-route {
+  --route-scale: 50svh;
+  --route: calc(var(--route-length, 1) * var(--route-scale));
+
+  stroke-dasharray: calc(0.07 * var(--route)) calc(0.93 * var(--route));
+  stroke-dashoffset: calc(0.07 * var(--route));
+  animation: hero-route 9s linear infinite;
+
+  @media (width < 48rem) {
+    --route-scale: 34svh;
+  }
+}
+
+@keyframes hero-route {
+  to {
+    stroke-dashoffset: calc(-0.93 * var(--route));
+  }
+}
+
+/* Hidden under the WebGL frame: stop repainting it every frame. */
+.hero-canvas[data-ready='true'] ~ .hero-fallback-layer .hero-route {
+  animation-play-state: paused;
+}
+
+/* One 2px box at the layer's origin; the motes are its box-shadows (see HeroDust). */
+.hero-dust > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+}
+
+.scroll-cue-track {
+  position: relative;
+  width: 1px;
+  height: 2.5rem;
+  overflow: hidden;
+  background-color: var(--border);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--ink-muted);
+    transform: translateY(-100%);
+    animation: scroll-cue 2.4s var(--ease-in-out-cubic) infinite;
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* ------------------------------------------------------------------ work */
+
+.disclosure {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 350ms var(--ease-in-out-cubic);
+
+  &[data-open='true'] {
+    grid-template-rows: 1fr;
+  }
+
+  & > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+.disclosure-icon {
+  transition: transform 150ms ease;
+}
+
+[aria-expanded='true'] .disclosure-icon,
+.project-row:has([aria-expanded='true']) .disclosure-icon {
+  transform: rotate(45deg);
+}
+
+/* The row's button stretches over the whole header, so the row is one hit area. */
+.project-row-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.project-row-button:focus-visible {
+  outline: none;
+}
+
+.project-row-button:focus-visible::after {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* surface-200, not 300: the row's ink-muted text keeps 4.5:1 while hovered. */
+.project-row:has(.project-row-button:hover) {
+  background-color: var(--surface-200);
+}
+
+/* Screenshots prove the work; they are shown desaturated so amber stays the only color. */
+.work-image {
+  filter: grayscale(1) contrast(1.04);
+}
+
+/* Decorative index numerals: pseudo-element text, never read or contrast-checked as content. */
+.ghost-numeral::before {
+  content: attr(data-numeral);
+  color: var(--ink-ghost);
+}
+
+.work-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 18rem;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background-color: var(--surface-300);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ------------------------------------------------------------------ experience */
+
+/* Decorative: drawn by scroll, so it stays hidden without the motion layer. */
+.timeline-progress {
+  transform: scaleY(0);
+  transform-origin: center top;
+}
+
+/* ------------------------------------------------------------------ cursor (desktop, motion allowed) */
+
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+
+.has-cursor :is(input, textarea, select, [contenteditable='true']) {
+  cursor: auto !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 9999px;
+  background-color: var(--accent);
+}
+
+.cursor-ring {
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+}
+
+.cursor-ring-shape {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--ink-muted);
+  border-radius: 9999px;
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.cursor-ring-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--family-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.cursor-visible .cursor-dot,
+.cursor-visible .cursor-ring {
+  opacity: 1;
+}
+
+.cursor-ring.is-hover .cursor-ring-shape {
+  transform: scale(1.5);
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.cursor-ring.is-hover.has-label .cursor-ring-label {
+  opacity: 1;
+}
+
+.cursor-visible .cursor-dot.is-hidden,
+.cursor-visible .is-text {
+  opacity: 0;
+}
+
+.cursor-ring.is-down .cursor-ring-shape {
+  transform: scale(0.85);
+}
+
+.cursor-ring.is-hover.is-down .cursor-ring-shape {
+  transform: scale(1.35);
+}
+
+/* ------------------------------------------------------------------ print */
+
+@media print {
+  .loader,
+  .site-nav,
+  .hero-visual,
+  .skip-link,
+  .cursor-dot,
+  .cursor-ring,
+  [data-print='hide'] {
+    display: none !important;
+  }
+
+  .hero-wrap,
+  .hero {
+    position: static;
+    height: auto;
+  }
+}

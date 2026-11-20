@@ -1,0 +1,25 @@
+# dependencies
+node_modules
+
+# next.js
+.next
+out
+*.tsbuildinfo
+
+# copied from detect-gpu at build time (scripts/copy-gpu-benchmarks.mjs)
+public/benchmarks
+
+# baked from assets/hero at build time (scripts/build-portrait.mjs)
+public/hero
+
+# env — keep .env.example
+.env
+.env*.local
+
+# tooling
+.vercel
+.lighthouseci
+lighthouse-reports
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
